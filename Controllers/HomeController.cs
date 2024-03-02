@@ -52,6 +52,10 @@ namespace IMS.Controllers
             }
             return View();
         }
+        public IActionResult Login()
+        {
+            return View();
+        }
         public IActionResult Delete(int id) 
         {
             var show = context.Products.Find(id);
