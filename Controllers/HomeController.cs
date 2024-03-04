@@ -1,6 +1,8 @@
 ﻿using IMS.Models;
+using MessagePack;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
 
 namespace IMS.Controllers
 {
@@ -21,9 +23,19 @@ namespace IMS.Controllers
             this.context = context;
             this.web = web;
         }
-        public IActionResult Index() 
+        public IActionResult Index()
         {
+            
             var show = context.Products.ToList();
+            if (HttpContext.Session.GetString("session") != null)
+            {
+                ViewBag.sessions = HttpContext.Session.GetString("session").ToString();
+            }
+
+            else
+            {
+                return View("Login");
+            }
             return View(show);
         }
         public IActionResult Create()
@@ -55,6 +67,23 @@ namespace IMS.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+        [HttpPost]
+        public IActionResult Login(Signup user)
+        {
+            var myuser = context.Signups.Where(x=>x.Email == user.Email && x.Password == user.Password).FirstOrDefault();
+            if(myuser  != null)
+            {
+                HttpContext.Session.SetString("session" ,myuser.Email);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewBag.login = "Login Failed";
+               
+            }
+            return View();
+            
         }
         public IActionResult Delete(int id) 
         {
