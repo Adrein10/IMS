@@ -25,6 +25,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li>
+                            @if(Context.Session.GetString("session") != null){
+                                <a class="btn btn-danger" asp-controller="Home" asp-action="Logout">
+                                    Logout
+                                </a>
+                            } 
+                        </li>
                     </ul>
                 </div>
             </div>

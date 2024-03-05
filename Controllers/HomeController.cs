@@ -135,7 +135,16 @@ namespace IMS.Controllers
         {
             return View();
         }
-
+        public IActionResult Logout()
+        {
+            if (HttpContext.Session.GetString("session") != null)
+            {
+                HttpContext.Session.Clear();
+                HttpContext.Session.Remove("session");
+                return RedirectToAction("Login");
+            }
+            return View();
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
